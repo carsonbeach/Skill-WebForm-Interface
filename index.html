@@ -17,13 +17,17 @@
     /* ==========================================================================
        FastSlowMotion (FSM) Skill Intake Form - Dark Theme & Branding
        ========================================================================== */
+    * {
+      box-sizing: border-box;
+    }
+
     :root {
-      --color-orange: #F05323; /* PMS #1655 C */
+      --color-orange: #F05323; 
       --color-orange-hover: #D94417;
-      --color-blue: #435FAB; /* PMS #102-7 C */
-      --color-navy: #1d204b; /* PMS #274 C */
-      --color-black: #000000; /* PMS Black 6 C */
-      --color-gray: #A7A8A9; /* PMS Cool Gray 6 */
+      --color-blue: #435FAB; 
+      --color-navy: #1d204b; 
+      --color-black: #000000; 
+      --color-gray: #A7A8A9; 
       
       --font-primary: 'Source Sans 3', sans-serif;
       --text-main: #f5f5f5;
@@ -33,10 +37,10 @@
     
     body {
       font-family: var(--font-primary);
-      background: var(--color-black); /* Darker website design */
+      background: var(--color-black); 
       color: var(--text-main);
       margin: 0;
-      padding: 40px 20px;
+      padding: 20px 10px; /* Reduced padding for embedded iframes */
     }
     
     .branding-header {
@@ -55,7 +59,7 @@
     
     .form-card, .review-card, .success-card {
       background: var(--color-navy);
-      padding: 40px;
+      padding: 30px;
       border-radius: 8px;
       max-width: 800px;
       margin: 0 auto;
@@ -63,7 +67,7 @@
       border: 1px solid rgba(167, 168, 169, 0.1);
     }
 
-    .form-group { margin-bottom: 24px; }
+    .form-group { margin-bottom: 24px; width: 100%; }
     .field-label { display: block; font-family: var(--font-primary); font-size: 0.95rem; font-weight: 600; color: #fff; margin-bottom: 8px; letter-spacing: 0.3px; }
     .field-label.required::after { content: " *"; color: var(--color-orange); }
     .badge-optional, .badge-multi { font-size: 0.72rem; padding: 2px 8px; background: rgba(167, 168, 169, 0.2); color: var(--color-gray); border-radius: var(--radius-full); margin-left: 6px; font-weight: 400; }
@@ -71,6 +75,7 @@
     .help-text i { color: var(--color-gray); font-size: 1.1rem; }
     .icon-orange { color: var(--color-orange) !important; }
     
+    /* Default 2-column grid for desktop */
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
     
     .input-wrapper, .textarea-wrapper { 
@@ -80,6 +85,7 @@
       border-radius: 4px; 
       padding: 12px;
       transition: border-color 0.2s ease;
+      width: 100%;
     }
     .input-wrapper:focus-within, .textarea-wrapper:focus-within {
       border-color: var(--color-blue);
@@ -103,7 +109,7 @@
     /* Dark Theme Select Styling */
     .input-wrapper select option { background: var(--color-navy); color: #fff; }
     
-    .section-header { display: flex; gap: 15px; margin: 40px 0 20px; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; }
+    .section-header { display: flex; gap: 15px; margin: 20px 0 20px; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; }
     .section-header:first-child { margin-top: 0; }
     .section-number { font-size: 1.5rem; font-weight: 700; color: var(--color-orange); }
     .section-title { margin: 0; font-size: 1.25rem; font-weight: 600;}
@@ -128,7 +134,7 @@
     .btn-secondary { background: #3a3d6b; color: #fff; }
     .btn-secondary:hover { background: #4a4e85; }
     
-    .form-actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 40px; }
+    .form-actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 40px; flex-wrap: wrap; }
     .validation-error { color: #ff6b6b; font-size: 0.85rem; margin-top: 5px; }
     .footer { text-align: center; font-size: 0.85rem; color: var(--color-gray); margin-top: 40px; }
     
@@ -138,10 +144,30 @@
     
     /* Summary Grid */
     .summary-grid-box { background: rgba(0,0,0,0.2); padding: 20px; border-radius: 4px; border: 1px solid #3a3d6b; margin-top: 20px;}
-    .summary-grid-box p { margin: 0 0 12px 0; font-size: 0.95rem; display: flex; gap: 10px; }
+    .summary-grid-box p { margin: 0 0 12px 0; font-size: 0.95rem; display: flex; flex-direction: column; gap: 4px; }
     .summary-grid-box p:last-child { margin-bottom: 0; }
-    .summary-grid-box strong { color: var(--color-gray); flex-shrink: 0; width: 180px; }
+    .summary-grid-box strong { color: var(--color-gray); }
     .summary-grid-box span { color: #fff; word-break: break-word; }
+
+    /* ==========================================================================
+       Responsive Media Queries for Mobile / Embedded iFrames
+       ========================================================================== */
+    @media (max-width: 650px) {
+      .grid-2 { 
+        grid-template-columns: 1fr; /* Stack columns vertically */
+        gap: 0;
+      }
+      .form-card, .review-card, .success-card {
+        padding: 20px;
+      }
+      .form-actions {
+        justify-content: center;
+      }
+      .btn-primary {
+        width: 100%;
+        justify-content: center;
+      }
+    }
   </style>
 </head>
 <body>
@@ -157,7 +183,7 @@
 
     <!-- STEP 1: Main Form -->
     <main class="form-card" id="formCard">
-      <!-- Added action, method, and target -->
+      <!-- Form Action -->
       <form id="skillForm" action="https://docs.google.com/forms/d/e/1FAIpQLSflYgJWuSgKkEuhX9hq9VChgldWW9O0FhiZiZUHHjaiaj-KvA/formResponse" method="POST" target="hidden_iframe" onsubmit="handleFormSubmit(event)">
         
         <section class="form-section">
@@ -206,7 +232,8 @@
                 <i class="las la-code-branch"></i>
                 <select id="submissionType" name="entry.2146746244" required onchange="handleSubmissionTypeChange()">
                   <option value="" disabled selected>Select submission type...</option>
-                  <option value="New Skill">New Skill</option>
+                  <!-- Updated option wording -->
+                  <option value="Submit a new Skill">Submit a new Skill</option>
                   <option value="Update to an existing skill">Update to an existing skill</option>
                 </select>
               </div>
@@ -230,30 +257,14 @@
             <div id="platformValidationMsg" class="validation-error" style="display:none;">Please select at least one platform.</div>
           </div>
 
-          <div class="grid-2">
-            <!-- Development Owner Name (689457415) - OPTIONAL -->
-            <div class="form-group">
-              <label for="devOwnerName" class="field-label">
-                Development Owner Name <span class="badge-optional">Optional</span>
-              </label>
-              <div class="input-wrapper">
-                <i class="las la-user-cog"></i>
-                <input type="text" id="devOwnerName" name="entry.689457415" placeholder="e.g. Brian, Ops Lead (if known)">
-              </div>
-              <p class="help-text">
-                <i class="las la-info-circle"></i> Captures who will own driving development.
-              </p>
-            </div>
-
-            <!-- Attachment Link (2080066520) -->
-            <div class="form-group">
-              <label for="attachmentLink" class="field-label">
-                Skill File / Attachment Link <span class="badge-optional">Optional</span>
-              </label>
-              <div class="input-wrapper">
-                <i class="las la-paperclip"></i>
-                <input type="url" id="attachmentLink" name="entry.2080066520" placeholder="https://drive.google.com/...">
-              </div>
+          <!-- Attachment Link (2080066520) - DYNAMICALLY SHOWN & REQUIRED -->
+          <div class="form-group" id="attachmentSection" style="display: none;">
+            <label for="attachmentLink" class="field-label required">
+              Skill File / Attachment Link
+            </label>
+            <div class="input-wrapper">
+              <i class="las la-paperclip"></i>
+              <input type="url" id="attachmentLink" name="entry.2080066520" placeholder="https://drive.google.com/...">
             </div>
           </div>
 
@@ -264,7 +275,6 @@
             <i class="las la-undo"></i> Reset Form
           </button>
           
-          <!-- "Click to Review Submission" Button -->
           <button type="submit" id="reviewBtn" class="btn-primary">
             <span>Click to Review Submission</span>
             <i class="las la-arrow-right"></i>
@@ -338,12 +348,15 @@
     });
 
     /**
-     * Toggles Platform Section visibility based on Submission Type selection
+     * Toggles conditionally displayed fields based on Submission Type
      */
     function handleSubmissionTypeChange() {
       const type = document.getElementById('submissionType').value;
       const platformSection = document.getElementById('platformSection');
+      const attachmentSection = document.getElementById('attachmentSection');
+      const attachmentInput = document.getElementById('attachmentLink');
       
+      // Update logic for Platform
       if (type === 'Update to an existing skill') {
         platformSection.style.display = 'block';
       } else {
@@ -352,6 +365,16 @@
         // Uncheck boxes to ensure hidden fields don't accidentally send
         document.querySelectorAll('input[name="platformChoice"]').forEach(cb => cb.checked = false);
         handlePlatformToggle(); 
+      }
+
+      // Update logic for Skill File / Attachment
+      if (type === 'Submit a new Skill') {
+        attachmentSection.style.display = 'block';
+        attachmentInput.required = true;
+      } else {
+        attachmentSection.style.display = 'none';
+        attachmentInput.required = false;
+        attachmentInput.value = '';
       }
     }
 
@@ -456,8 +479,7 @@
         email: document.getElementById('userEmail').value,
         submissionType: type,
         platforms: platformValues,
-        devOwner: document.getElementById('devOwnerName').value.trim() || 'Not specified',
-        attachment: document.getElementById('attachmentLink').value.trim() || 'None'
+        attachment: document.getElementById('attachmentLink').value.trim()
       };
 
       renderSummaryGrid('reviewSummaryGrid');
@@ -471,9 +493,11 @@
       const target = document.getElementById(targetId);
       if(!target) return;
       
-      let platformHtml = '';
+      let dynamicHtml = '';
       if (lastSubmissionData.submissionType === 'Update to an existing skill') {
-        platformHtml = `<p><strong>Platforms:</strong> <span>${lastSubmissionData.platforms}</span></p>`;
+        dynamicHtml = `<p><strong>Platforms:</strong> <span>${lastSubmissionData.platforms}</span></p>`;
+      } else if (lastSubmissionData.submissionType === 'Submit a new Skill') {
+        dynamicHtml = `<p><strong>Attachment Link:</strong> <span>${lastSubmissionData.attachment}</span></p>`;
       }
 
       target.innerHTML = `
@@ -481,9 +505,7 @@
         <p><strong>Last Name:</strong> <span>${lastSubmissionData.lastName}</span></p>
         <p><strong>Email Address:</strong> <span>${lastSubmissionData.email}</span></p>
         <p><strong>Submission Type:</strong> <span>${lastSubmissionData.submissionType}</span></p>
-        ${platformHtml}
-        <p><strong>Dev Owner:</strong> <span>${lastSubmissionData.devOwner}</span></p>
-        <p><strong>Attachment Link:</strong> <span>${lastSubmissionData.attachment}</span></p>
+        ${dynamicHtml}
       `;
     }
 
