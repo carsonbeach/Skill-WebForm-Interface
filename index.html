@@ -204,7 +204,7 @@
               <label for="submissionType" class="field-label required">Submission Type</label>
               <div class="input-wrapper">
                 <i class="las la-code-branch"></i>
-                <select id="submissionType" name="entry.2146746244" required>
+                <select id="submissionType" name="entry.2146746244" required onchange="handleSubmissionTypeChange()">
                   <option value="" disabled selected>Select submission type...</option>
                   <option value="New Skill">New Skill</option>
                   <option value="Update to an existing skill">Update to an existing skill</option>
@@ -213,75 +213,8 @@
             </div>
           </div>
 
-          <!-- Skill Title (Correct at 1824341173) -->
-          <div class="form-group">
-            <label for="skillTitle" class="field-label required">Skill Title</label>
-            <div class="input-wrapper">
-              <i class="las la-pen-nib"></i>
-              <input type="text" id="skillTitle" name="entry.1824341173" placeholder="e.g. Status Report Skill, Flow Review" required>
-            </div>
-          </div>
-        </section>
-
-        <section class="form-section">
-          <div class="section-header">
-            <div class="section-number">02</div>
-            <div>
-              <h2 class="section-title">Context & Purpose</h2>
-              <p class="section-desc">Explain request rationale.</p>
-            </div>
-          </div>
-          <div class="form-group">
-            <!-- Context & Background (1562488108) -->
-            <label for="context" class="field-label required">Context & Background</label>
-            <div class="textarea-wrapper">
-              <textarea id="context" name="entry.1562488108" rows="3" placeholder="Describe why this skill is needed..." required></textarea>
-            </div>
-          </div>
-          <div class="form-group">
-            <!-- Task / Job Accomplished (1683868754) -->
-            <label for="taskAccomplished" class="field-label required">Task / Job Accomplished</label>
-            <div class="textarea-wrapper">
-              <textarea id="taskAccomplished" name="entry.1683868754" rows="3" placeholder="Explain step-by-step what task or workflow this skill completes..." required></textarea>
-            </div>
-          </div>
-        </section>
-
-        <section class="form-section">
-          <div class="section-header">
-            <div class="section-number">03</div>
-            <div>
-              <h2 class="section-title">Inputs, Outputs & Systems</h2>
-              <p class="section-desc">Define technical details.</p>
-            </div>
-          </div>
-          <div class="grid-2">
-            <div class="form-group">
-              <!-- Required Inputs (647773838) -->
-              <label for="requiredInputs" class="field-label required">Required Inputs</label>
-              <div class="textarea-wrapper">
-                <textarea id="requiredInputs" name="entry.647773838" rows="3" placeholder="e.g., Salesforce Opportunity ID, Client PDF report..." required></textarea>
-              </div>
-            </div>
-            <div class="form-group">
-              <!-- Expected Outputs (1703054742) -->
-              <label for="expectedOutputs" class="field-label required">Expected Outputs</label>
-              <div class="textarea-wrapper">
-                <textarea id="expectedOutputs" name="entry.1703054742" rows="3" placeholder="e.g., Markdown summary in Slack..." required></textarea>
-              </div>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <!-- Access Requirements (183100156) -->
-            <label for="accessRequirements" class="field-label required">Access Requirements</label>
-            <div class="textarea-wrapper">
-              <textarea id="accessRequirements" name="entry.183100156" rows="2" placeholder="e.g., Needs admin access to Salesforce..." required></textarea>
-            </div>
-          </div>
-          
-          <div class="form-group">
-            <!-- Platform / System (950948022) -->
+          <!-- Platform / System (950948022) - DYNAMICALLY SHOWN -->
+          <div class="form-group" id="platformSection" style="display: none;">
             <label class="field-label required">
               Platform / System <span class="badge-multi">Multi-Select</span>
             </label>
@@ -298,18 +231,6 @@
           </div>
 
           <div class="grid-2">
-            <div class="form-group">
-              <!-- Requester Name (1999638315) -->
-              <label for="requesterName" class="field-label required">Requester Name</label>
-              <div class="input-wrapper">
-                <i class="las la-user-check"></i>
-                <input type="text" id="requesterName" name="entry.1999638315" placeholder="e.g. First Last" required>
-              </div>
-              <p class="help-text">
-                <i class="las la-magic icon-orange"></i> Auto-filled from First & Last name above.
-              </p>
-            </div>
-            
             <!-- Development Owner Name (689457415) - OPTIONAL -->
             <div class="form-group">
               <label for="devOwnerName" class="field-label">
@@ -323,22 +244,23 @@
                 <i class="las la-info-circle"></i> Captures who will own driving development.
               </p>
             </div>
-          </div>
-          
-          <div class="form-group">
+
             <!-- Attachment Link (2080066520) -->
-            <label for="attachmentLink" class="field-label">
-              Skill File / Attachment Link <span class="badge-optional">Optional</span>
-            </label>
-            <div class="input-wrapper">
-              <i class="las la-paperclip"></i>
-              <input type="url" id="attachmentLink" name="entry.2080066520" placeholder="https://drive.google.com/...">
+            <div class="form-group">
+              <label for="attachmentLink" class="field-label">
+                Skill File / Attachment Link <span class="badge-optional">Optional</span>
+              </label>
+              <div class="input-wrapper">
+                <i class="las la-paperclip"></i>
+                <input type="url" id="attachmentLink" name="entry.2080066520" placeholder="https://drive.google.com/...">
+              </div>
             </div>
           </div>
+
         </section>
         
         <div class="form-actions">
-          <button type="button" class="btn-primary btn-secondary" onclick="document.getElementById('skillForm').reset(); handleNameInput(); handlePlatformToggle();">
+          <button type="button" class="btn-primary btn-secondary" onclick="document.getElementById('skillForm').reset(); handleNameInput(); handleSubmissionTypeChange(); handlePlatformToggle();">
             <i class="las la-undo"></i> Reset Form
           </button>
           
@@ -406,34 +328,45 @@
     let userProfile = {
       firstName: '',
       lastName: '',
-      email: '',
-      requesterName: ''
+      email: ''
     };
 
     document.addEventListener('DOMContentLoaded', () => {
       handleNameInput();
+      handleSubmissionTypeChange();
       handlePlatformToggle();
     });
 
     /**
-     * Automatically computes email address and requester name from First and Last Name.
+     * Toggles Platform Section visibility based on Submission Type selection
+     */
+    function handleSubmissionTypeChange() {
+      const type = document.getElementById('submissionType').value;
+      const platformSection = document.getElementById('platformSection');
+      
+      if (type === 'Update to an existing skill') {
+        platformSection.style.display = 'block';
+      } else {
+        platformSection.style.display = 'none';
+        
+        // Uncheck boxes to ensure hidden fields don't accidentally send
+        document.querySelectorAll('input[name="platformChoice"]').forEach(cb => cb.checked = false);
+        handlePlatformToggle(); 
+      }
+    }
+
+    /**
+     * Automatically computes email address from First and Last Name.
      */
     function handleNameInput() {
       const fnInput = document.getElementById('firstName');
       const lnInput = document.getElementById('lastName');
       const emailInput = document.getElementById('userEmail');
-      const requesterInput = document.getElementById('requesterName');
 
       if (!fnInput || !lnInput) return;
 
       const fn = fnInput.value.trim();
       const ln = lnInput.value.trim();
-
-      const fullName = [fn, ln].filter(Boolean).join(' ');
-      if (requesterInput) {
-        requesterInput.value = fullName;
-        userProfile.requesterName = fullName;
-      }
 
       const cleanFn = fn.toLowerCase().replace(/[^a-z0-9]/g, '');
       const cleanLn = ln.toLowerCase().replace(/[^a-z0-9]/g, '');
@@ -501,12 +434,17 @@
     function handleFormSubmit(e) {
       e.preventDefault();
       
-      const checkedBoxes = document.querySelectorAll('input[name="platformChoice"]:checked');
-      const validationMsg = document.getElementById('platformValidationMsg');
+      const type = document.getElementById('submissionType').value;
       
-      if (checkedBoxes.length === 0) {
-        if(validationMsg) validationMsg.style.display = 'block';
-        return;
+      // Platform validation is only required if it's an Update
+      if (type === 'Update to an existing skill') {
+        const checkedBoxes = document.querySelectorAll('input[name="platformChoice"]:checked');
+        const validationMsg = document.getElementById('platformValidationMsg');
+        
+        if (checkedBoxes.length === 0) {
+          if(validationMsg) validationMsg.style.display = 'block';
+          return;
+        }
       }
 
       const hiddenPlatformInputs = document.querySelectorAll('#hiddenPlatformInputs input');
@@ -516,15 +454,8 @@
         firstName: document.getElementById('firstName').value,
         lastName: document.getElementById('lastName').value,
         email: document.getElementById('userEmail').value,
-        submissionType: document.getElementById('submissionType').value,
-        skillTitle: document.getElementById('skillTitle').value,
-        context: document.getElementById('context').value,
-        task: document.getElementById('taskAccomplished').value,
-        inputs: document.getElementById('requiredInputs').value,
-        outputs: document.getElementById('expectedOutputs').value,
-        accessReqs: document.getElementById('accessRequirements').value,
+        submissionType: type,
         platforms: platformValues,
-        requester: document.getElementById('requesterName').value,
         devOwner: document.getElementById('devOwnerName').value.trim() || 'Not specified',
         attachment: document.getElementById('attachmentLink').value.trim() || 'None'
       };
@@ -540,19 +471,17 @@
       const target = document.getElementById(targetId);
       if(!target) return;
       
+      let platformHtml = '';
+      if (lastSubmissionData.submissionType === 'Update to an existing skill') {
+        platformHtml = `<p><strong>Platforms:</strong> <span>${lastSubmissionData.platforms}</span></p>`;
+      }
+
       target.innerHTML = `
         <p><strong>First Name:</strong> <span>${lastSubmissionData.firstName}</span></p>
         <p><strong>Last Name:</strong> <span>${lastSubmissionData.lastName}</span></p>
         <p><strong>Email Address:</strong> <span>${lastSubmissionData.email}</span></p>
         <p><strong>Submission Type:</strong> <span>${lastSubmissionData.submissionType}</span></p>
-        <p><strong>Skill Title:</strong> <span>${lastSubmissionData.skillTitle}</span></p>
-        <p><strong>Context & Background:</strong> <span>${lastSubmissionData.context}</span></p>
-        <p><strong>Task Accomplished:</strong> <span>${lastSubmissionData.task}</span></p>
-        <p><strong>Required Inputs:</strong> <span>${lastSubmissionData.inputs}</span></p>
-        <p><strong>Expected Outputs:</strong> <span>${lastSubmissionData.outputs}</span></p>
-        <p><strong>Access Reqs:</strong> <span>${lastSubmissionData.accessReqs}</span></p>
-        <p><strong>Platforms:</strong> <span>${lastSubmissionData.platforms}</span></p>
-        <p><strong>Requester:</strong> <span>${lastSubmissionData.requester}</span></p>
+        ${platformHtml}
         <p><strong>Dev Owner:</strong> <span>${lastSubmissionData.devOwner}</span></p>
         <p><strong>Attachment Link:</strong> <span>${lastSubmissionData.attachment}</span></p>
       `;
@@ -594,6 +523,7 @@
     function submitAnother() {
       document.getElementById('skillForm').reset();
       handleNameInput();
+      handleSubmissionTypeChange();
       handlePlatformToggle();
       
       document.getElementById('successCard').style.display = 'none';
