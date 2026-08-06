@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FastSlowMotion (FSM) Skill Intake Form</title>
+  
+  <!-- FSM Branding: Source Sans 3 Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <!-- FSM Branding: Line Awesome Icons -->
+  <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+  
+  <style>
+    /* ==========================================================================
+       FastSlowMotion (FSM) Skill Intake Form - Dark Theme & Branding
+       ========================================================================== */
+    :root {
+      --color-orange: #F05323; /* PMS #1655 C */
+      --color-orange-hover: #D94417;
+      --color-blue: #435FAB; /* PMS #102-7 C */
+      --color-navy: #1d204b; /* PMS #274 C */
+      --color-black: #000000; /* PMS Black 6 C */
+      --color-gray: #A7A8A9; /* PMS Cool Gray 6 */
+      
+      --font-primary: 'Source Sans 3', sans-serif;
+      --text-main: #f5f5f5;
+      --text-secondary: #A7A8A9;
+      --radius-full: 999px;
+    }
+    
+    body {
+      font-family: var(--font-primary);
+      background: var(--color-black); /* Darker website design */
+      color: var(--text-main);
+      margin: 0;
+      padding: 40px 20px;
+    }
+    
+    .branding-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .branding-header h1 {
+      color: var(--text-main);
+      font-weight: 700;
+      margin: 0;
+      letter-spacing: 0.5px;
+    }
+    .branding-header h1 span {
+      color: var(--color-orange);
+    }
+    
+    .form-card, .review-card, .success-card {
+      background: var(--color-navy);
+      padding: 40px;
+      border-radius: 8px;
+      max-width: 800px;
+      margin: 0 auto;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+      border: 1px solid rgba(167, 168, 169, 0.1);
+    }
+
+    .form-group { margin-bottom: 24px; }
+    .field-label { display: block; font-family: var(--font-primary); font-size: 0.95rem; font-weight: 600; color: #fff; margin-bottom: 8px; letter-spacing: 0.3px; }
+    .field-label.required::after { content: " *"; color: var(--color-orange); }
+    .badge-optional, .badge-multi { font-size: 0.72rem; padding: 2px 8px; background: rgba(167, 168, 169, 0.2); color: var(--color-gray); border-radius: var(--radius-full); margin-left: 6px; font-weight: 400; }
+    .help-text { font-size: 0.85rem; color: var(--text-secondary); margin-top: 8px; display: flex; align-items: center; gap: 6px; }
+    .help-text i { color: var(--color-gray); font-size: 1.1rem; }
+    .icon-orange { color: var(--color-orange) !important; }
+    
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    
+    .input-wrapper, .textarea-wrapper { 
+      display: flex; 
+      background: rgba(0,0,0,0.3); 
+      border: 1px solid #3a3d6b; 
+      border-radius: 4px; 
+      padding: 12px;
+      transition: border-color 0.2s ease;
+    }
+    .input-wrapper:focus-within, .textarea-wrapper:focus-within {
+      border-color: var(--color-blue);
+    }
+    
+    .input-wrapper i { margin-right: 12px; color: var(--color-gray); align-self: center; font-size: 1.2rem; }
+    .input-wrapper input, .input-wrapper select, .textarea-wrapper textarea { 
+      background: transparent; 
+      border: none; 
+      width: 100%; 
+      outline: none; 
+      font-family: inherit;
+      color: #fff;
+      font-size: 1rem;
+    }
+    
+    .input-wrapper input::placeholder, .textarea-wrapper textarea::placeholder {
+      color: #666;
+    }
+    
+    /* Dark Theme Select Styling */
+    .input-wrapper select option { background: var(--color-navy); color: #fff; }
+    
+    .section-header { display: flex; gap: 15px; margin: 40px 0 20px; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; }
+    .section-header:first-child { margin-top: 0; }
+    .section-number { font-size: 1.5rem; font-weight: 700; color: var(--color-orange); }
+    .section-title { margin: 0; font-size: 1.25rem; font-weight: 600;}
+    .section-desc { margin: 4px 0 0; font-size: 0.9rem; color: var(--text-secondary); }
+    
+    .btn-primary { 
+      background: var(--color-orange); 
+      color: #fff; 
+      border: none; 
+      padding: 12px 24px; 
+      border-radius: 4px; 
+      cursor: pointer; 
+      font-weight: 600;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: background 0.2s ease;
+      font-family: var(--font-primary);
+    }
+    .btn-primary:hover { background: var(--color-orange-hover); }
+    .btn-secondary { background: #3a3d6b; color: #fff; }
+    .btn-secondary:hover { background: #4a4e85; }
+    
+    .form-actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 40px; }
+    .validation-error { color: #ff6b6b; font-size: 0.85rem; margin-top: 5px; }
+    .footer { text-align: center; font-size: 0.85rem; color: var(--color-gray); margin-top: 40px; }
+    
+    /* Checkbox Styling */
+    .checkbox-group label { display: flex; align-items: center; gap: 8px; cursor: pointer; color: #ddd; margin-bottom: 6px;}
+    .checkbox-group input[type="checkbox"] { accent-color: var(--color-orange); width: 16px; height: 16px; cursor: pointer;}
+    
+    /* Summary Grid */
+    .summary-grid-box { background: rgba(0,0,0,0.2); padding: 20px; border-radius: 4px; border: 1px solid #3a3d6b; margin-top: 20px;}
+    .summary-grid-box p { margin: 0 0 12px 0; font-size: 0.95rem; display: flex; gap: 10px; }
+    .summary-grid-box p:last-child { margin-bottom: 0; }
+    .summary-grid-box strong { color: var(--color-gray); flex-shrink: 0; width: 180px; }
+    .summary-grid-box span { color: #fff; word-break: break-word; }
+  </style>
+</head>
+<body>
+  
+  <div id="app-container">
+    
+    <div class="branding-header">
+      <h1>FastSlow<span>Motion</span></h1>
+    </div>
+
+    <!-- Hidden iframe to silently capture the Google Form response -->
+    <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(window.submitted){ showSuccessScreen(); }"></iframe>
+
+    <!-- STEP 1: Main Form -->
+    <main class="form-card" id="formCard">
+      <!-- Added action, method, and target -->
+      <form id="skillForm" action="https://docs.google.com/forms/d/e/1FAIpQLSflYgJWuSgKkEuhX9hq9VChgldWW9O0FhiZiZUHHjaiaj-KvA/formResponse" method="POST" target="hidden_iframe" onsubmit="handleFormSubmit(event)">
+        
+        <section class="form-section">
+          <div class="section-header">
+            <div class="section-number">01</div>
+            <div>
+              <h2 class="section-title">Submitter Details</h2>
+              <p class="section-desc">Basic information about the request.</p>
+            </div>
+          </div>
+          
+          <div class="grid-2">
+            <!-- First Name (RE-MAPPED to 329388960) -->
+            <div class="form-group">
+              <label for="firstName" class="field-label required">First Name</label>
+              <div class="input-wrapper">
+                <i class="las la-user"></i>
+                <input type="text" id="firstName" name="entry.329388960" placeholder="e.g. First Name" required oninput="handleNameInput()">
+              </div>
+            </div>
+            <!-- Last Name (RE-MAPPED to 1554770420) -->
+            <div class="form-group">
+              <label for="lastName" class="field-label required">Last Name</label>
+              <div class="input-wrapper">
+                <i class="las la-user"></i>
+                <input type="text" id="lastName" name="entry.1554770420" placeholder="e.g. Last Name" required oninput="handleNameInput()">
+              </div>
+            </div>
+          </div>
+          
+          <div class="grid-2">
+            <!-- Email Address (RE-MAPPED to 1210107977) -->
+            <div class="form-group">
+              <label for="userEmail" class="field-label required">Email Address</label>
+              <div class="input-wrapper">
+                <i class="las la-envelope"></i>
+                <input type="email" id="userEmail" name="entry.1210107977" placeholder="e.g. first.last@fastslowmotion.com" required>
+              </div>
+              <p class="help-text"><i class="las la-magic icon-orange"></i> Auto-computed as firstname.lastname@fastslowmotion.com</p>
+            </div>
+            
+            <!-- Submission Type (RE-MAPPED to 2146746244) -->
+            <div class="form-group">
+              <label for="submissionType" class="field-label required">Submission Type</label>
+              <div class="input-wrapper">
+                <i class="las la-code-branch"></i>
+                <select id="submissionType" name="entry.2146746244" required>
+                  <option value="" disabled selected>Select submission type...</option>
+                  <option value="New Skill">New Skill</option>
+                  <option value="Update to an existing skill">Update to an existing skill</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Skill Title (Correct at 1824341173) -->
+          <div class="form-group">
+            <label for="skillTitle" class="field-label required">Skill Title</label>
+            <div class="input-wrapper">
+              <i class="las la-pen-nib"></i>
+              <input type="text" id="skillTitle" name="entry.1824341173" placeholder="e.g. Status Report Skill, Flow Review" required>
+            </div>
+          </div>
+        </section>
+
+        <section class="form-section">
+          <div class="section-header">
+            <div class="section-number">02</div>
+            <div>
+              <h2 class="section-title">Context & Purpose</h2>
+              <p class="section-desc">Explain request rationale.</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <!-- Context & Background (1562488108) -->
+            <label for="context" class="field-label required">Context & Background</label>
+            <div class="textarea-wrapper">
+              <textarea id="context" name="entry.1562488108" rows="3" placeholder="Describe why this skill is needed..." required></textarea>
+            </div>
+          </div>
+          <div class="form-group">
+            <!-- Task / Job Accomplished (1683868754) -->
+            <label for="taskAccomplished" class="field-label required">Task / Job Accomplished</label>
+            <div class="textarea-wrapper">
+              <textarea id="taskAccomplished" name="entry.1683868754" rows="3" placeholder="Explain step-by-step what task or workflow this skill completes..." required></textarea>
+            </div>
+          </div>
+        </section>
+
+        <section class="form-section">
+          <div class="section-header">
+            <div class="section-number">03</div>
+            <div>
+              <h2 class="section-title">Inputs, Outputs & Systems</h2>
+              <p class="section-desc">Define technical details.</p>
+            </div>
+          </div>
+          <div class="grid-2">
+            <div class="form-group">
+              <!-- Required Inputs (647773838) -->
+              <label for="requiredInputs" class="field-label required">Required Inputs</label>
+              <div class="textarea-wrapper">
+                <textarea id="requiredInputs" name="entry.647773838" rows="3" placeholder="e.g., Salesforce Opportunity ID, Client PDF report..." required></textarea>
+              </div>
+            </div>
+            <div class="form-group">
+              <!-- Expected Outputs (1703054742) -->
+              <label for="expectedOutputs" class="field-label required">Expected Outputs</label>
+              <div class="textarea-wrapper">
+                <textarea id="expectedOutputs" name="entry.1703054742" rows="3" placeholder="e.g., Markdown summary in Slack..." required></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <!-- Access Requirements (183100156) -->
+            <label for="accessRequirements" class="field-label required">Access Requirements</label>
+            <div class="textarea-wrapper">
+              <textarea id="accessRequirements" name="entry.183100156" rows="2" placeholder="e.g., Needs admin access to Salesforce..." required></textarea>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <!-- Platform / System (950948022) -->
+            <label class="field-label required">
+              Platform / System <span class="badge-multi">Multi-Select</span>
+            </label>
+            <div class="checkbox-group">
+              <label><input type="checkbox" name="platformChoice" value="Claude" onchange="handlePlatformToggle()"> Claude</label>
+              <label><input type="checkbox" name="platformChoice" value="Slackbot" onchange="handlePlatformToggle()"> Slackbot</label>
+              <label><input type="checkbox" name="platformChoice" value="Other" onchange="handlePlatformToggle()"> Other</label>
+            </div>
+            <div class="input-wrapper" id="otherPlatformGroup" style="display:none; margin-top: 10px;">
+              <input type="text" id="otherPlatformText" placeholder="Specify other platform (e.g. Notion, Custom Internal API)" oninput="handlePlatformToggle()">
+            </div>
+            <div id="hiddenPlatformInputs"></div>
+            <div id="platformValidationMsg" class="validation-error" style="display:none;">Please select at least one platform.</div>
+          </div>
+
+          <div class="grid-2">
+            <div class="form-group">
+              <!-- Requester Name (1999638315) -->
+              <label for="requesterName" class="field-label required">Requester Name</label>
+              <div class="input-wrapper">
+                <i class="las la-user-check"></i>
+                <input type="text" id="requesterName" name="entry.1999638315" placeholder="e.g. First Last" required>
+              </div>
+              <p class="help-text">
+                <i class="las la-magic icon-orange"></i> Auto-filled from First & Last name above.
+              </p>
+            </div>
+            
+            <!-- Development Owner Name (689457415) - OPTIONAL -->
+            <div class="form-group">
+              <label for="devOwnerName" class="field-label">
+                Development Owner Name <span class="badge-optional">Optional</span>
+              </label>
+              <div class="input-wrapper">
+                <i class="las la-user-cog"></i>
+                <input type="text" id="devOwnerName" name="entry.689457415" placeholder="e.g. Brian, Ops Lead (if known)">
+              </div>
+              <p class="help-text">
+                <i class="las la-info-circle"></i> Captures who will own driving development.
+              </p>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <!-- Attachment Link (2080066520) -->
+            <label for="attachmentLink" class="field-label">
+              Skill File / Attachment Link <span class="badge-optional">Optional</span>
+            </label>
+            <div class="input-wrapper">
+              <i class="las la-paperclip"></i>
+              <input type="url" id="attachmentLink" name="entry.2080066520" placeholder="https://drive.google.com/...">
+            </div>
+          </div>
+        </section>
+        
+        <div class="form-actions">
+          <button type="button" class="btn-primary btn-secondary" onclick="document.getElementById('skillForm').reset(); handleNameInput(); handlePlatformToggle();">
+            <i class="las la-undo"></i> Reset Form
+          </button>
+          
+          <!-- "Click to Review Submission" Button -->
+          <button type="submit" id="reviewBtn" class="btn-primary">
+            <span>Click to Review Submission</span>
+            <i class="las la-arrow-right"></i>
+          </button>
+        </div>
+      </form>
+    </main>
+
+    <!-- STEP 2: Review Submission Card -->
+    <div class="review-card" id="reviewCard" style="display: none;">
+      <div class="section-header" style="margin-top: 0;">
+        <h2 class="section-title">Review Submission</h2>
+      </div>
+      <div id="reviewSummaryGrid" class="summary-grid-box">
+        <!-- Dynamically populated via JS -->
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn-primary btn-secondary" onclick="document.getElementById('reviewCard').style.display='none'; document.getElementById('formCard').style.display='block'; window.scrollTo({ top: 0, behavior: 'smooth' });">
+           <i class="las la-arrow-left"></i> Back to Edit
+        </button>
+        <button type="button" class="btn-primary" onclick="submitFinalForm()">
+           <i class="las la-check"></i> Submit to Pipeline
+        </button>
+      </div>
+    </div>
+
+    <!-- STEP 3: Success Confirmation State -->
+    <div class="success-card" id="successCard" style="display: none;">
+      <div style="text-align: center; color: var(--color-blue); font-size: 4rem; margin-bottom: 20px;">
+        <i class="las la-check-circle"></i>
+      </div>
+      <h2 class="section-title" style="text-align: center; font-size: 1.8rem;">Skill Submission Received!</h2>
+      <p class="section-desc" style="text-align: center; margin-top: 10px;">
+        Your intake response has been successfully logged to the <strong>FastSlowMotion Ops Google Sheet</strong> and triaged into the Basecamp skill pipeline.
+      </p>
+      <div class="submission-summary" style="margin-top: 40px;">
+        <h3><i class="las la-tasks"></i> Logged Request Summary</h3>
+        <div id="successSummaryGrid" class="summary-grid-box">
+          <!-- Dynamically populated via JS -->
+        </div>
+      </div>
+      <div class="form-actions" style="justify-content: center;">
+        <button class="btn-primary" onclick="submitAnother()">
+          <i class="las la-plus"></i> Submit Another Skill Idea
+        </button>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>FastSlowMotion Custom Intake Interface • Direct Google Form Integration</p>
+    </footer>
+  </div>
+
+  <!-- ==========================================================================
+       JavaScript Application Logic
+       ========================================================================== -->
+  <script>
+    window.submitted = false;
+    let lastSubmissionData = {};
+    let userProfile = {
+      firstName: '',
+      lastName: '',
+      email: '',
+      requesterName: ''
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+      handleNameInput();
+      handlePlatformToggle();
+    });
+
+    /**
+     * Automatically computes email address and requester name from First and Last Name.
+     */
+    function handleNameInput() {
+      const fnInput = document.getElementById('firstName');
+      const lnInput = document.getElementById('lastName');
+      const emailInput = document.getElementById('userEmail');
+      const requesterInput = document.getElementById('requesterName');
+
+      if (!fnInput || !lnInput) return;
+
+      const fn = fnInput.value.trim();
+      const ln = lnInput.value.trim();
+
+      const fullName = [fn, ln].filter(Boolean).join(' ');
+      if (requesterInput) {
+        requesterInput.value = fullName;
+        userProfile.requesterName = fullName;
+      }
+
+      const cleanFn = fn.toLowerCase().replace(/[^a-z0-9]/g, '');
+      const cleanLn = ln.toLowerCase().replace(/[^a-z0-9]/g, '');
+      
+      let computedEmail = '';
+      if (cleanFn && cleanLn) {
+        computedEmail = `${cleanFn}.${cleanLn}@fastslowmotion.com`;
+      } else if (cleanFn) {
+        computedEmail = `${cleanFn}@fastslowmotion.com`;
+      }
+
+      if (emailInput && computedEmail) {
+        emailInput.value = computedEmail;
+        userProfile.email = computedEmail;
+      }
+      
+      userProfile.firstName = fn;
+      userProfile.lastName = ln;
+    }
+
+    /**
+     * Handles multiselect checkboxes for the Platform / Systems
+     */
+    function handlePlatformToggle() {
+      const otherGroup = document.getElementById('otherPlatformGroup');
+      const otherInput = document.getElementById('otherPlatformText');
+      const hiddenContainer = document.getElementById('hiddenPlatformInputs');
+      const validationMsg = document.getElementById('platformValidationMsg');
+      
+      if(!hiddenContainer) return;
+
+      const checkedBoxes = document.querySelectorAll('input[name="platformChoice"]:checked');
+      
+      let isOtherChecked = false;
+      checkedBoxes.forEach(box => {
+        if (box.value === 'Other') isOtherChecked = true;
+      });
+
+      if (isOtherChecked && otherGroup) {
+        otherGroup.style.display = 'block';
+      } else if (otherGroup) {
+        otherGroup.style.display = 'none';
+        if (otherInput) otherInput.value = '';
+      }
+
+      hiddenContainer.innerHTML = '';
+      
+      checkedBoxes.forEach(box => {
+        const val = box.value === 'Other' && otherInput ? otherInput.value || 'Other' : box.value;
+        const hiddenInput = document.createElement('input');
+        hiddenInput.type = 'hidden';
+        hiddenInput.name = 'entry.950948022'; 
+        hiddenInput.value = val;
+        hiddenContainer.appendChild(hiddenInput);
+      });
+
+      if (checkedBoxes.length > 0 && validationMsg) {
+        validationMsg.style.display = 'none';
+      }
+    }
+
+    /**
+     * Intercepts standard submit to show the review card
+     */
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      
+      const checkedBoxes = document.querySelectorAll('input[name="platformChoice"]:checked');
+      const validationMsg = document.getElementById('platformValidationMsg');
+      
+      if (checkedBoxes.length === 0) {
+        if(validationMsg) validationMsg.style.display = 'block';
+        return;
+      }
+
+      const hiddenPlatformInputs = document.querySelectorAll('#hiddenPlatformInputs input');
+      const platformValues = Array.from(hiddenPlatformInputs).map(i => i.value).join(', ');
+
+      lastSubmissionData = {
+        firstName: document.getElementById('firstName').value,
+        lastName: document.getElementById('lastName').value,
+        email: document.getElementById('userEmail').value,
+        submissionType: document.getElementById('submissionType').value,
+        skillTitle: document.getElementById('skillTitle').value,
+        context: document.getElementById('context').value,
+        task: document.getElementById('taskAccomplished').value,
+        inputs: document.getElementById('requiredInputs').value,
+        outputs: document.getElementById('expectedOutputs').value,
+        accessReqs: document.getElementById('accessRequirements').value,
+        platforms: platformValues,
+        requester: document.getElementById('requesterName').value,
+        devOwner: document.getElementById('devOwnerName').value.trim() || 'Not specified',
+        attachment: document.getElementById('attachmentLink').value.trim() || 'None'
+      };
+
+      renderSummaryGrid('reviewSummaryGrid');
+
+      document.getElementById('formCard').style.display = 'none';
+      document.getElementById('reviewCard').style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function renderSummaryGrid(targetId) {
+      const target = document.getElementById(targetId);
+      if(!target) return;
+      
+      target.innerHTML = `
+        <p><strong>First Name:</strong> <span>${lastSubmissionData.firstName}</span></p>
+        <p><strong>Last Name:</strong> <span>${lastSubmissionData.lastName}</span></p>
+        <p><strong>Email Address:</strong> <span>${lastSubmissionData.email}</span></p>
+        <p><strong>Submission Type:</strong> <span>${lastSubmissionData.submissionType}</span></p>
+        <p><strong>Skill Title:</strong> <span>${lastSubmissionData.skillTitle}</span></p>
+        <p><strong>Context & Background:</strong> <span>${lastSubmissionData.context}</span></p>
+        <p><strong>Task Accomplished:</strong> <span>${lastSubmissionData.task}</span></p>
+        <p><strong>Required Inputs:</strong> <span>${lastSubmissionData.inputs}</span></p>
+        <p><strong>Expected Outputs:</strong> <span>${lastSubmissionData.outputs}</span></p>
+        <p><strong>Access Reqs:</strong> <span>${lastSubmissionData.accessReqs}</span></p>
+        <p><strong>Platforms:</strong> <span>${lastSubmissionData.platforms}</span></p>
+        <p><strong>Requester:</strong> <span>${lastSubmissionData.requester}</span></p>
+        <p><strong>Dev Owner:</strong> <span>${lastSubmissionData.devOwner}</span></p>
+        <p><strong>Attachment Link:</strong> <span>${lastSubmissionData.attachment}</span></p>
+      `;
+    }
+
+    /**
+     * Final submission handler
+     */
+    function submitFinalForm() {
+      // 1. Mark that we are actively submitting
+      window.submitted = true; 
+      
+      // 2. Change button text to show it's loading
+      const btn = document.querySelector('#reviewCard .btn-primary:nth-child(2)');
+      btn.innerHTML = '<i class="las la-spinner la-spin"></i> Submitting...';
+      btn.disabled = true;
+
+      // 3. Actually submit the form to Google Forms (bypasses onsubmit)
+      document.getElementById('skillForm').submit();
+    }
+
+    /**
+     * Triggered automatically when the hidden iframe finishes loading the Google Form response
+     */
+    function showSuccessScreen() {
+      document.getElementById('reviewCard').style.display = 'none';
+      document.getElementById('successCard').style.display = 'block';
+      renderSummaryGrid('successSummaryGrid');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      // Reset the submit button for next time
+      const btn = document.querySelector('#reviewCard .btn-primary:nth-child(2)');
+      btn.innerHTML = '<i class="las la-check"></i> Submit to Pipeline';
+      btn.disabled = false;
+      
+      window.submitted = false; // reset flag
+    }
+
+    function submitAnother() {
+      document.getElementById('skillForm').reset();
+      handleNameInput();
+      handlePlatformToggle();
+      
+      document.getElementById('successCard').style.display = 'none';
+      document.getElementById('formCard').style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>
